@@ -29,6 +29,15 @@ module.exports = new GraphQLSchema({
                 },
                 resolve: (root, args, context) =>
                     Promise.resolve(context.mongodb.Loadout.findById(args._id))
+            },
+            loadouts: {
+                type: new GraphQLList(LoadoutType),
+                args: {
+                    name: { type: GraphQLString },
+                    items: { type: new GraphQLList(GraphQLInt) },
+                },
+                resolve: (root, args, context) =>
+                    Promise.resolve(context.mongodb.Loadout.find(args))
             }
         })
     }),
