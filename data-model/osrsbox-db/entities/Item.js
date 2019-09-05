@@ -3,8 +3,6 @@ const { ItemWeapon } = require("./ItemWeapon");
 
 const OsrsboxDbObjectType = require("../OsrsboxDbObjectType");
 const {
-    GraphQLList,
-    GraphQLObjectType,
     GraphQLInt,
     GraphQLFloat,
     GraphQLBoolean,
