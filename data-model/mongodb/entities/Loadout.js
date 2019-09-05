@@ -12,7 +12,7 @@ module.exports = new GraphQLObjectType({
     description: "...",
     fields: () => ({
         id: {
-            type: GraphQLInt,
+            type: GraphQLString,
             resolve: (obj) => obj._id
         },
         name: {

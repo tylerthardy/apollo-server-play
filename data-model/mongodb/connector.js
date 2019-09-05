@@ -7,7 +7,6 @@ mongoose.connect(url, { useNewUrlParser: true });
 mongoose.connection.once('open', () => console.log(`Connected to mongo at ${url}`));
 
 const LoadoutSchema = new mongoose.Schema({
-    _id: String,
     name: String,
     items: [Number]
 });
