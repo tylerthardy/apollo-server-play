@@ -1,4 +1,5 @@
 const ItemType = require("./data-model/osrsbox-db/entities/Item");
+const ItemSummaryType = require("./data-model/osrsbox-db/entities/ItemSummary");
 const LoadoutType = require("./data-model/mongodb/entities/Loadout");
 const {
     GraphQLSchema,
@@ -21,6 +22,13 @@ module.exports = new GraphQLSchema({
                     id: { type: GraphQLInt }
                 },
                 resolve: (root, args, context) => context.itemLoader.load(args.id)
+            },
+            items: {
+                type: new GraphQLList(ItemType),
+                args: {
+                    name: { type: GraphQLString }
+                },
+                resolve: (root, args, context) => context.fetchItemSummary(args.name).then((items) => context.itemLoader.loadMany(items.map(x => x.id)))
             },
             loadout: {
                 type: LoadoutType,

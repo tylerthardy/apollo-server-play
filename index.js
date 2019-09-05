@@ -10,9 +10,21 @@ const fetchItem = id => fetch(`https://www.osrsbox.com/osrsbox-db/items-json/${i
     .then(response => response.json())
     .catch((error) => null);
 const itemLoader = new DataLoader(ids => Promise.all(ids.map(fetchItem)));
+const fetchItemSummary = (name) => fetch(`https://www.osrsbox.com/osrsbox-db/items-summary.json`)
+    .then(response => response.json())
+    .then(json => {
+      let itemArray = [];
+      for(var i in json) {
+        itemArray.push(json[i]);
+      }
+      let nameRegex = new RegExp(name, "i");
+      return itemArray.filter(x => x.name.match(nameRegex));
+    })
+    .catch((error) => null); //TODO: Cache fetched json with ~24 hour expiration on it
 
 const context = {
     itemLoader,
+    fetchItemSummary,
     mongodb
 };
 
