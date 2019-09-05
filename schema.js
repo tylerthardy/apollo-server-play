@@ -4,6 +4,7 @@ const {
     GraphQLSchema,
     GraphQLObjectType,
     GraphQLInt,
+    GraphQLList,
     GraphQLNonNull,
     GraphQLString
 } = require("graphql");
@@ -26,7 +27,8 @@ module.exports = new GraphQLSchema({
                 args: {
                     _id: { type: GraphQLString }
                 },
-                resolve: (root, args, context) => context.mongodb.Loadout.findById(args._id)
+                resolve: (root, args, context) =>
+                    Promise.resolve(context.mongodb.Loadout.findById(args._id))
             }
         })
     })
