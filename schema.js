@@ -31,5 +31,20 @@ module.exports = new GraphQLSchema({
                     Promise.resolve(context.mongodb.Loadout.findById(args._id))
             }
         })
+    }),
+    mutation: new GraphQLObjectType({
+        name: "Mutations",
+        description: "Mutations layer",
+
+        fields: () => ({
+            addLoadout: {
+                type: LoadoutType,
+                args: {
+                    name: { type: GraphQLString },
+                    items: { type: new GraphQLList(GraphQLInt)}
+                },
+                resolve: (root, args, context) => Promise.resolve(new context.mongodb.Loadout(args).save())
+            }
+        })
     })
 });
