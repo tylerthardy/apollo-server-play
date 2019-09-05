@@ -23,6 +23,7 @@ module.exports = new GraphQLObjectType({
             type: new GraphQLList(ItemType),
             resolve: (obj, args, context) => {
                 return context.itemLoader.loadMany(obj.items)
+                    .then((items) => items.filter((item) => item != null))
             }
         }
     })

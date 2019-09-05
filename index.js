@@ -7,7 +7,8 @@ const DataLoader = require('dataloader');
 const mongodb = require("./data-model/mongodb/connector");
 
 const fetchItem = id => fetch(`https://www.osrsbox.com/osrsbox-db/items-json/${id}.json`)
-    .then(response => response.json());
+    .then(response => response.json())
+    .catch((error) => null);
 const itemLoader = new DataLoader(ids => Promise.all(ids.map(fetchItem)));
 
 const context = {
