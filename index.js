@@ -4,14 +4,15 @@ const fetch = require("node-fetch")
 const DataLoader = require('dataloader');
 
 // Connect to mongo db
-require("./data-model/mongodb/connector");
+const mongodb = require("./data-model/mongodb/connector");
 
 const fetchItem = id => fetch(`https://www.osrsbox.com/osrsbox-db/items-json/${id}.json`)
     .then(response => response.json());
 const itemLoader = new DataLoader(ids => Promise.all(ids.map(fetchItem)));
 
 const context = {
-    itemLoader
+    itemLoader,
+    mongodb
 };
 
 const server = new ApolloServer({

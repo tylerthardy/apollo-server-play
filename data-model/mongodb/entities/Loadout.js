@@ -1,12 +1,29 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const ItemType = require("../../osrsbox-db/entities/Item");
+const {
+    GraphQLObjectType,
+    GraphQLInt,
+    GraphQLString,
+    GraphQLList,
+    GraphQLFieldConfig
+} = require("graphql");
 
-const loadoutSchema = new Schema({
-    Name: String
+module.exports = new GraphQLObjectType({
+    name: "Loadout",
+    description: "...",
+    fields: () => ({
+        id: {
+            type: GraphQLInt,
+            resolve: (obj) => obj._id
+        },
+        name: {
+            type: GraphQLString,
+            resolve: (obj) => obj.name
+        },
+        items:  {
+            type: new GraphQLList(ItemType),
+            resolve: (obj, args, context) => {
+                return context.itemLoader.loadMany(obj.items)
+            }
+        }
+    })
 });
-  
-const Loadout = mongoose.model('loadout', loadoutSchema); 
-  
-module.exports = {
-    Loadout
-};

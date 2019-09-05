@@ -24,26 +24,9 @@ module.exports = new GraphQLSchema({
             loadout: {
                 type: LoadoutType,
                 args: {
-                    id: {type: GraphQLInt }
+                    _id: { type: GraphQLString }
                 },
-                resolve: (_, args) => LoadoutType.find({id: args.id}).exec()
-            }
-        })
-    }),
-    mutation: new GraphQLObjectType({
-        name: "Mutation",
-        description: "Mutation layer",
-
-        fields: () => ({
-            addLoadout: {
-                type: LoadoutType,
-                description: "Create a loadout",
-                args: {
-                    name: GraphQLNonNull(GraphQLString)
-                },
-                resolve: (value, args) => {
-                    return LoadoutType.create(args);
-                }
+                resolve: (root, args, context) => context.mongodb.Loadout.findById(args._id)
             }
         })
     })
