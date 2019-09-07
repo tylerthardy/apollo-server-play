@@ -1,3 +1,4 @@
+const ContainerItemType = require("./ContainerItem");
 const ItemType = require("../../osrsbox-db/entities/Item");
 const {
     GraphQLObjectType,
@@ -19,12 +20,21 @@ module.exports = new GraphQLObjectType({
             type: GraphQLString,
             resolve: (obj) => obj.name
         },
-        items:  {
-            type: new GraphQLList(ItemType),
-            resolve: (obj, args, context) => {
-                return context.itemLoader.loadMany(obj.items)
-                    .then((items) => items.filter((item) => item != null))
-            }
+        inventory: {
+            type: new GraphQLList(ContainerItemType),
+            resolve: (obj, args, context) =>
+                obj.inventory.map((val) => context.itemLoader.load(val.item).then((item) => {
+                    item.slot = val.slot;
+                    return item;
+                }))
+        },
+        equipment: {
+            type: new GraphQLList(ContainerItemType),
+            resolve: (obj, args, context) =>
+                obj.equipment.map((val) => context.itemLoader.load(val.item).then((item) => {
+                    item.slot = val.slot;
+                    return item;
+                }))
         }
     })
 });

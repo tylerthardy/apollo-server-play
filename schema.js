@@ -1,3 +1,5 @@
+const { ContainerItemInput } = require("./data-model/mongodb/entities/input/ContainerItemInput");
+
 const ItemType = require("./data-model/osrsbox-db/entities/Item");
 const ItemSummaryType = require("./data-model/osrsbox-db/entities/ItemSummary");
 const LoadoutType = require("./data-model/mongodb/entities/Loadout");
@@ -6,7 +8,6 @@ const {
     GraphQLObjectType,
     GraphQLInt,
     GraphQLList,
-    GraphQLNonNull,
     GraphQLString
 } = require("graphql");
 
@@ -35,8 +36,7 @@ module.exports = new GraphQLSchema({
                 args: {
                     _id: { type: GraphQLString }
                 },
-                resolve: (root, args, context) =>
-                    Promise.resolve(context.mongodb.Loadout.findById(args._id))
+                resolve: (root, args, context) => context.mongodb.Loadout.findById(args._id).exec()
             },
             loadouts: {
                 type: new GraphQLList(LoadoutType),
@@ -44,8 +44,7 @@ module.exports = new GraphQLSchema({
                     name: { type: GraphQLString },
                     items: { type: new GraphQLList(GraphQLInt) },
                 },
-                resolve: (root, args, context) =>
-                    Promise.resolve(context.mongodb.Loadout.find(args))
+                resolve: (root, args, context) => context.mongodb.Loadout.find(args).exec()
             }
         })
     }),
@@ -58,9 +57,9 @@ module.exports = new GraphQLSchema({
                 type: LoadoutType,
                 args: {
                     name: { type: GraphQLString },
-                    items: { type: new GraphQLList(GraphQLInt)}
+                    inventory: { type: new GraphQLList(ContainerItemInput) }
                 },
-                resolve: (root, args, context) => Promise.resolve(new context.mongodb.Loadout(args).save())
+                resolve: (root, args, context) => context.mongodb.Loadout(args).save()
             }
         })
     })
