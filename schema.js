@@ -57,7 +57,8 @@ module.exports = new GraphQLSchema({
                 type: LoadoutType,
                 args: {
                     name: { type: GraphQLString },
-                    inventory: { type: new GraphQLList(ContainerItemInput) }
+                    inventory: { type: new GraphQLList(ContainerItemInput) },
+                    equipment: { type: new GraphQLList(ContainerItemInput) }
                 },
                 resolve: (root, args, context) => context.mongodb.Loadout(args).save()
             }

@@ -22,18 +22,33 @@ module.exports = new GraphQLObjectType({
         },
         inventory: {
             type: new GraphQLList(ContainerItemType),
-            resolve: (obj, args, context) =>
-                obj.inventory.map((val) => context.itemLoader.load(val.item).then((item) => {
-                    item.slot = val.slot;
-                    return item;
+            resolve: (obj, args, context) => {
+                return obj.inventory.map((val) => context.itemLoader.load(val.item).then((item) => {
+                    let out = {};
+                    for (const a in item) {
+                        if (item.hasOwnProperty(a)) {
+                            out[a] = item[a];
+                        }
+                    }
+                    out._id = val._id;
+                    out.slot = val.slot;
+                    return out;
                 }))
+            }
         },
         equipment: {
             type: new GraphQLList(ContainerItemType),
             resolve: (obj, args, context) =>
                 obj.equipment.map((val) => context.itemLoader.load(val.item).then((item) => {
-                    item.slot = val.slot;
-                    return item;
+                    let out = {};
+                    for (const a in item) {
+                        if (item.hasOwnProperty(a)) {
+                            out[a] = item[a];
+                        }
+                    }
+                    out._id = val._id;
+                    out.slot = val.slot;
+                    return out;
                 }))
         }
     })
