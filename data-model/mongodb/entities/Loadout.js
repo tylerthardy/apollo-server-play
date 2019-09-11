@@ -32,6 +32,7 @@ module.exports = new GraphQLObjectType({
                     }
                     out._id = val._id;
                     out.slot = val.slot;
+                    out.quantity = val.quantity;
                     return out;
                 }))
             }
@@ -48,6 +49,7 @@ module.exports = new GraphQLObjectType({
                     }
                     out._id = val._id;
                     out.slot = val.slot;
+                    out.quantity = val.quantity;
                     return out;
                 }))
         }

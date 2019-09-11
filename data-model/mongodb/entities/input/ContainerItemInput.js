@@ -5,7 +5,8 @@ const ContainerItemInput = new GraphQLInputObjectType({
     description: "...",
     fields: {
         item: { type: GraphQLInt },
-        slot: { type: GraphQLInt }
+        slot: { type: GraphQLInt },
+        quantity: {type: GraphQLInt }
     }
 });
 
