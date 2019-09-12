@@ -57,10 +57,14 @@ module.exports = new GraphQLSchema({
                 type: LoadoutType,
                 args: {
                     name: { type: GraphQLString },
+                    activity: { type: GraphQLString },
                     inventory: { type: new GraphQLList(ContainerItemInput) },
                     equipment: { type: new GraphQLList(ContainerItemInput) }
                 },
-                resolve: (root, args, context) => context.mongodb.Loadout(args).save()
+                resolve: (root, args, context) => {
+                    args.activityId = context.mongodb.Activity.findOne({name: args.activity}).exec().then((res) => res._id)
+                    return context.mongodb.Loadout(args).save();
+                }
             }
         })
     })

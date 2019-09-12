@@ -1,5 +1,5 @@
 const ContainerItemType = require("./ContainerItem");
-const ItemType = require("../../osrsbox-db/entities/Item");
+const ActivityType = require("./Activity");
 const {
     GraphQLObjectType,
     GraphQLInt,
@@ -19,6 +19,13 @@ module.exports = new GraphQLObjectType({
         name: {
             type: GraphQLString,
             resolve: (obj) => obj.name
+        },
+        activity: {
+            type: ActivityType,
+            resolve: (obj, args, context) => {
+                if (!obj.activityId) return null;
+                return context.mongodb.Activity.findById(obj.activityId).exec().then((res) => res);
+            }
         },
         inventory: {
             type: new GraphQLList(ContainerItemType),
